@@ -9,7 +9,7 @@ namespace DemoApp1
         {
             Console.WriteLine("Введите имя");
             string name = Console.ReadLine();
-            Thread.Sleep(5000); //timeout:TimeSpan.FromDays(5)
+            Thread.Sleep(5000); 
             Console.WriteLine($"Здравствуйте, {name}!");
             Thread.Sleep(5000);
             Console.WriteLine($"Прощай, {name}!");
