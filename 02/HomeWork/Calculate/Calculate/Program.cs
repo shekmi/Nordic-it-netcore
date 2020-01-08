@@ -9,7 +9,7 @@ namespace Calculate
             double variableFirst = 0;
             double variableSecond = 0;
             double result = 0;
-            string temp;
+            string temp = "", codeError = "";
 
             try
             {
@@ -23,44 +23,44 @@ namespace Calculate
                 Console.WriteLine("Enter the type of operation:");
                 temp = Console.ReadLine();
 
-                switch (temp)
+                if (variableSecond == 0 && (temp == "/" || temp == "%"))
                 {
-                    case "+":
-                        Console.WriteLine("Result: {0}", (variableFirst + variableSecond));
-                        break;
-                    case "-":
-                        Console.WriteLine("Result: {0}", (variableFirst - variableSecond));
-                        break;
-                    case "*":
-                        Console.WriteLine("Result: {0}", (variableFirst * variableSecond));
-                        break;
-                    case "/":
-                        if (variableSecond == 0)
-                        {
-                            Console.WriteLine("Division by 0!!!");
-                        }
-                        else
-                        {
-                            Console.WriteLine("Result: {0}", (variableFirst / variableSecond));
-                            result = variableFirst / variableSecond;
-                        }
-                        break;
-                    case "%":
-                        if (variableSecond == 0)
-                        {
-                            Console.WriteLine("Division by 0!!!");
-                        }
-                        else
-                        {
-                            Console.WriteLine("Result: {0}", (variableFirst % variableSecond));
-                        }
-                        break;
-                    case "^":
-                        Console.WriteLine("Result: {0}", Math.Pow(variableFirst, variableSecond));
-                        break;
-                    default:
-                        Console.WriteLine("You must enter correct operation (+, -, *, /, %, ^)");
-                        break;
+                    codeError = "Division by 0!!!";
+                }
+                else
+                {
+                    switch (temp)
+                    {
+                        case "+":
+                            result = variableFirst + variableSecond;
+                            break;
+                        case "-":
+                            result = variableFirst - variableSecond;
+                            break;
+                        case "*":
+                            result = variableFirst * variableSecond;
+                            break;
+                        case "/":
+                            result = variableFirst / variableSecond;                     
+                            break;
+                        case "%":                         
+                            result = variableFirst % variableSecond;                 
+                            break;
+                        case "^":
+                            result = Math.Pow(variableFirst, variableSecond);
+                            break;
+                        default:
+                            codeError = "You must enter correct operation (+, -, *, /, %, ^)";
+                            break;
+                    }
+                }
+                if (codeError != "")
+                {
+                    Console.WriteLine("Error: " + codeError);
+                }
+                else
+                {
+                    Console.WriteLine("Result = {0}", result);
                 }
             }
             catch (Exception ex)
