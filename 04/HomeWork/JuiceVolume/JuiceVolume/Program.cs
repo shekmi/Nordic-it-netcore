@@ -7,6 +7,7 @@ namespace JuiceVolume
         [Flags]
         enum Containers
         {
+            Empty = 0,
             Small = 1,
             Medium = 2,
             Large = 4
@@ -15,45 +16,52 @@ namespace JuiceVolume
         static void Main()
         {
             string output = "";
-            Containers containers = 0x0;
+            Containers containers = Containers.Empty;
             double value = 0;
-            int container20 = 20;
-            int container5 = 5;
-            int container1 = 1;
-            int numContainer20 = 0, numContainer5 = 0;
-            Console.WriteLine("Какой объем сока (в литрах) требуется упаковать ?");
-            bool isNum = double.TryParse(Console.ReadLine(), out value);
-            if (!isNum || value <= 0)
+            const int containerL = 20;
+            const int containerM = 5;
+            const int containerS = 1;
+            int numContainerL = 0, numContainerM = 0;
+            try
             {
-                Console.WriteLine("Введенная строка не является числом или введено некорректное значение");
-                return;
+                Console.WriteLine("Какой объем сока (в литрах) требуется упаковать ?");
+                bool isNum = double.TryParse(Console.ReadLine(), out value);
+                if (!isNum || value <= 0)
+                {
+                    Console.WriteLine("Введенная строка не является числом или введено некорректное значение");
+                    return;
+                }
+                int valueToInt = checked((int)Math.Round(value, MidpointRounding.AwayFromZero));
+
+                numContainerL = valueToInt / containerL;
+                valueToInt %= containerL;
+                containers |= ((numContainerL > 0) ? Containers.Large : Containers.Empty);
+
+                numContainerM = valueToInt / containerM;
+                valueToInt %= containerM;
+                containers |= ((numContainerM > 0) ? Containers.Medium : Containers.Empty);
+
+                containers |= ((valueToInt > 0) ? Containers.Small : Containers.Empty);
+
+                if ((containers & Containers.Large) != 0)
+                {
+                    output = $"{containerL} л : {numContainerL} шт\n";
+                }
+                if ((containers & Containers.Medium) != 0)
+                {
+                    output += $" {containerM} л : {numContainerM} шт\n";
+                }
+                if ((containers & Containers.Small) != 0)
+                {
+                    output += $" {containerS} л : {valueToInt} шт\n";
+                }
+                Console.WriteLine(output);             
             }
-            int valueToInt = (int)Math.Round(value, MidpointRounding.AwayFromZero);
-
-            numContainer20 = valueToInt / container20;
-            valueToInt %= container20;
-            containers |= ((numContainer20 > 0) ? (Containers)0x4 : 0x0);
-
-            numContainer5 = valueToInt / container5;
-            valueToInt %= container5;
-            containers |= ((numContainer5 > 0) ? (Containers)0x2 : 0x0);
-
-            containers |= ((valueToInt > 0) ? (Containers)0x1 : 0x0);
-
-            if (((int)containers & 0x4) != 0)
+            catch(OverflowException e)
             {
-                output = $"{container20} л : {numContainer20} шт\n";
+                Console.WriteLine("Указанное значение слишком большое\n" +
+                   e.Message);
             }
-            if (((int)containers & 0x2) != 0)
-            {
-                output += $" {container5} л : {numContainer5} шт\n";
-            }
-            if (((int)containers & 0x1) != 0)
-            {
-                output += $" {container1} л : {valueToInt} шт\n";
-            }
-
-            Console.WriteLine(output);
             Console.ReadKey();
         }
     }
