@@ -28,14 +28,12 @@ namespace ParamFigures
                         double diameter = double.Parse(Console.ReadLine());
                         sFigure = Math.Round((Math.PI / 4 * Math.Pow(diameter, 2)), 2);
                         pFigure = Math.Round((Math.PI * diameter), 2);
-                        output = outputSquare + sFigure + "\n" + outputPerimeter + pFigure;
                         break;
                     case Figure.Triangle:
                         Console.WriteLine("Введите длину стороны треугольника: ");
                         double length = double.Parse(Console.ReadLine());
                         sFigure = Math.Round(((Math.Pow(length, 2) * Math.Sqrt(3)) / 4), 2);
                         pFigure = Math.Round((3 * length), 2);
-                        output = outputSquare + sFigure + "\n" + outputPerimeter + pFigure;
                         break;
                     case Figure.Rectangle:
                         Console.WriteLine("Введите длину прямоугольника: ");
@@ -43,18 +41,22 @@ namespace ParamFigures
                         Console.WriteLine("Введите высоту прямоугольника: ");
                         double height = double.Parse(Console.ReadLine());
                         sFigure = Math.Round((width * height), 2);
-                        pFigure = Math.Round((2 * (width + height)), 2);
-                        output = outputSquare + sFigure + "\n" + outputPerimeter + pFigure;
+                        pFigure = Math.Round((2 * (width + height)), 2);                       
                         break;
                     default:
                         output = "Неверный тип фигуры";
                         break;
                 }
+                if (output == String.Empty)
+                {
+                    output = outputSquare + sFigure + "\n" + outputPerimeter + pFigure;
+                }
                 Console.WriteLine(output);
             }
             catch (FormatException e)
             {
-                Console.WriteLine("Ошибка! Введено нечисловое значение!");
+                Console.WriteLine("Ошибка! Введено нечисловое значение!\n" + 
+                    e.Message);
             }
             Console.ReadKey();
         }
