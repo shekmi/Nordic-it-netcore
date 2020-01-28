@@ -20,21 +20,16 @@ namespace DefinitionEvenNumber
                     {
                         outputStr = "Введено неверное значение! Попробуйте ещё раз: ";
                     }
-                    else if (inputValue == 0)
-                    {
-                        numEvenNumber = 1;
-                        break;
-                    }
                     else
                     {
-                        while (inputValue > 0)
+                        do 
                         {
                             if (((inputValue % 10) % 2) == 0)
                             {
                                 numEvenNumber++;
                             }
                             inputValue /= 10;
-                        }
+                        }while(inputValue > 0);
                         break;
                     }
                 }
