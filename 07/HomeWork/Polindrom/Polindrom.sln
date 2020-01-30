@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29709.97
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Polindrom", "Polindrom\Polindrom.csproj", "{2E4F01FA-0400-4DF3-814A-1D4D2CCB30EB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2E4F01FA-0400-4DF3-814A-1D4D2CCB30EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E4F01FA-0400-4DF3-814A-1D4D2CCB30EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E4F01FA-0400-4DF3-814A-1D4D2CCB30EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E4F01FA-0400-4DF3-814A-1D4D2CCB30EB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C1A01334-5365-4897-BE4A-CCB5DCA700F6}
+	EndGlobalSection
+EndGlobal
