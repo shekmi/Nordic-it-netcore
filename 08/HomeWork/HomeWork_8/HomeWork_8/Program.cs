@@ -25,7 +25,7 @@ namespace HomeWork_8
                 { '(' , ')' }, 
                 { '[' , ']' }
             };
-            bool flag = false;
+            bool isResultOk = false;
             for (int i = 0; i < str.Length; i++)
             {
                 stack.Push(str[i]);          
@@ -35,17 +35,16 @@ namespace HomeWork_8
                     char simvKey = stack.Pop();
                     if (dictionary[simvKey] == simvValue)
                     {
-                        flag = true;                        
+                        isResultOk = true;                        
                     }
                     else
                     {
-                        flag = false;
+                        isResultOk = false;
                         break;
                     }
                 }                    
-            }       
-
-            Console.WriteLine(flag);
+            }   
+            Console.WriteLine(isResultOk);
         }
     }
 }
