@@ -6,26 +6,21 @@ namespace Polindrom
     class Program
     {
         static void Main(string[] args)
-        {
-            string inputString = "";
+        {            
             StringBuilder newOutputString = new StringBuilder();
             Console.WriteLine("Введите непустую строку:");
-            while (true)
+            string inputString = Console.ReadLine();
+            while (string.IsNullOrWhiteSpace(inputString))
             {
-                inputString = Console.ReadLine();
-                if (string.IsNullOrWhiteSpace(inputString))
-                {
-                    Console.WriteLine("Вы ввели пустую строку :( Попробуйте ещё раз:");
-                    continue;
-                }
-                inputString = inputString.ToLower();
-                for (int i = inputString.Length - 1; i >= 0; i--)
-                {
-                    newOutputString.Append(inputString[i]);
-                }
-                Console.WriteLine(newOutputString);
-                break;
+                Console.WriteLine("Вы ввели пустую строку :( Попробуйте ещё раз:");
+                inputString = Console.ReadLine(); 
             }
+            inputString = inputString.ToLower();
+            for (int i = inputString.Length - 1; i >= 0; i--)
+            {
+                newOutputString.Append(inputString[i]);
+            }
+            Console.WriteLine(newOutputString);
             Console.ReadKey();
         }
     }

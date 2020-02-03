@@ -9,25 +9,24 @@ namespace ReviewString
             int indexFirstCharacter = 0;
             string inputStr = "";
             string[] arrayStr;
+            Console.WriteLine("Введите строку из нескольких слов: ");
             while (true)
             {
-                Console.WriteLine("Введите строку из нескольких слов: ");
-                inputStr = Console.ReadLine();                                
+                inputStr = Console.ReadLine();
                 arrayStr = inputStr.Split(new char[] { ' ', '.', ',', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-                if (arrayStr.Length < 2)
+                if (arrayStr.Length > 1)
                 {
-                    Console.WriteLine("Слишком мало слов :( Попробуйте ещё раз: ");
-                    continue;
+                    break;
                 }
+                Console.WriteLine("Слишком мало слов :( Попробуйте ещё раз: ");
+            }
 
-                for (int i = 0; i < arrayStr.Length; i++)
+            for (int i = 0; i < arrayStr.Length; i++)
+            {
+                if (arrayStr[i].StartsWith("А", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (arrayStr[i].StartsWith("А", StringComparison.OrdinalIgnoreCase))
-                    {
-                        indexFirstCharacter++;
-                    }
+                    indexFirstCharacter++;
                 }
-                break;
             }
             Console.WriteLine("Количество слов, начинающихся с буквы 'А': " + indexFirstCharacter);
             Console.ReadKey();
