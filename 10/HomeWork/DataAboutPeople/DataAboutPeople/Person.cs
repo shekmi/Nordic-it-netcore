@@ -28,7 +28,7 @@ namespace DataAboutPeople
         }
         public int AgeInFourYears { get { return (_ageNow + 4); } }
 
-        public string PrintOutput { get { return $"{Name}, age in 4 years: {AgeInFourYears}"; } }
+        public string PersonDescription { get { return $"{Name}, age in 4 years: {AgeInFourYears}"; } }
     }
 }
 
