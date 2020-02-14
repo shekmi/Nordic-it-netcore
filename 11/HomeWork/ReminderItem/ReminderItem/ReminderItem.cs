@@ -1,23 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace ReminderItem
 {
-    class ReminderItem
-    {
-        string _alarmMessage;
+    public class ReminderItem
+    {        
         public DateTimeOffset AlarmDate { get; set; }
 
-        public string AlarmMessage 
-        {
-            get { return _alarmMessage; }
-            set { _alarmMessage = value; }
-        }
-
+        public string AlarmMessage { get; set; }
+     
         public TimeSpan TimeToAlarm 
         {
-            get { return DateTimeOffset.Now - AlarmDate; } 
+            get
+            {
+                return (AlarmDate - DateTimeOffset.Now); 
+            } 
         }
 
         public bool IsOutdated 
@@ -25,18 +22,18 @@ namespace ReminderItem
             get { return TimeToAlarm >= TimeSpan.Zero ? true : false; }
         }
 
-        ReminderItem(DateTimeOffset alarmDate, string alarmMessage)
+        public ReminderItem(DateTimeOffset alarmDate, string alarmMessage)
         {
             AlarmDate = alarmDate;
             AlarmMessage = alarmMessage;
         }
 
         public void WriteProperties()
-        {
-            Console.WriteLine($" AlarmDate: {AlarmDate}" +
-                $"AlarmMessage: {AlarmMessage}" +
-                $"TimeToAlarm: {TimeToAlarm}" +
-                $"IsOutdated: {IsOutdated}");
+        {           
+            Console.WriteLine($"AlarmDate: {AlarmDate}\n" +
+                $"AlarmMessage: {AlarmMessage}\n" +
+                $"TimeToAlarm: Days: {TimeToAlarm.Days}, Hours: {TimeToAlarm.Hours}, Minutes: {TimeToAlarm.Minutes}\n" +
+                $"IsOutdated: {IsOutdated.ToString()}"); 
         }
     }
 }
