@@ -16,7 +16,5 @@ namespace ClassWork
 			double perimetSquare = circle.Calculate(SquareOperation.GetPerimetr);
 			Console.WriteLine(perimetSquare);
 		}
-
-		
 	}
 }
