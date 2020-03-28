@@ -4,31 +4,34 @@ using System.Text;
 
 namespace LogWriter
 {
-	class MultipleLogWriter : ILogWriter
+	class MultipleLogWriter : AbstractLogWriter, IDisposable
 	{
-		public ConsoleLogWriter ConsoleLog { get; }
-		public FileLogWriter FileLog { get; }
-		public MultipleLogWriter(ConsoleLogWriter consoleLog, FileLogWriter fileLog)
+		private IEnumerable<ILogWriter> _logWriters;
+		public MultipleLogWriter(params ILogWriter[] writers)
 		{
-			ConsoleLog = consoleLog;
-			FileLog = fileLog;
-		}
-		public void LogError(string message)
+			_logWriters = writers;
+		}		
+
+		protected override void LogRecordType(string message, MessageType logRecordType)
 		{
-			ConsoleLog.LogError(message);
-			FileLog.LogError(message);
+			foreach (var item in _logWriters)
+			{
+				if(item is ConsoleLogWriter)
+				{
+					Console.WriteLine(base.GetLogRecord(message, logRecordType));
+				}
+				else
+				{
+					item.
+				}
+					
+			}
+			Console.WriteLine(base.GetLogRecord(message, logRecordType));
 		}
 
-		public void LogInfo(string message)
+		public void Dispose()
 		{
-			ConsoleLog.LogInfo(message);
-			FileLog.LogInfo(message);
-		}
-
-		public void LogWarning(string message)
-		{
-			ConsoleLog.LogWarning(message);
-			FileLog.LogWarning(message);
+			throw new NotImplementedException();
 		}
 	}
 }

@@ -5,46 +5,27 @@ using System.IO;
 
 namespace LogWriter
 {
-    class FileLogWriter: ILogWriter, IDisposable
+    class FileLogWriter: AbstractLogWriter, IDisposable
     {
+
         private readonly StreamWriter _streamWriter;
-        public string FileName { get; }
-        public FileLogWriter(string filePath)
+
+        public FileLogWriter(string fileName = "log.txt")
         {
-            FileName = filePath;
-            try
-            {
-                _streamWriter = new StreamWriter(
-                File.Open(
-                    filePath,
-                    FileMode.Append,
-                    FileAccess.Write,
-                    FileShare.Read));
-            }
-            catch (DirectoryNotFoundException)
-            {
-                Console.WriteLine("Создайте необходимую директорию");                
-            }           
+            _streamWriter = new StreamWriter(
+            File.Open(
+                fileName,
+                FileMode.OpenOrCreate,
+                FileAccess.ReadWrite,
+                FileShare.Read));
+            _streamWriter.BaseStream.Seek(0, SeekOrigin.End);           
         }
 
-        public void LogInfo(string message)
+        protected override void LogRecordType(string message, MessageType logRecordType)
         {
-            _streamWriter?.WriteLine($"{DateTimeOffset.Now.ToString("yyyy-MM-ddTHH:mm:ss+0000")} {MessageType.Info} {message}");
+            _streamWriter?.WriteLine(base.GetLogRecord(message, logRecordType));
             _streamWriter?.Flush();
         }
-
-        public void LogWarning(string message)
-        {
-            _streamWriter?.WriteLine($"{DateTimeOffset.Now.ToString("yyyy-MM-ddTHH:mm:ss+0000")} {MessageType.Warning} {message}");
-            _streamWriter?.Flush();
-        }
-
-        public void LogError(string message)
-        {
-            _streamWriter?.WriteLine($"{DateTimeOffset.Now.ToString("yyyy-MM-ddTHH:mm:ss+0000")} {MessageType.Error} {message}");
-            _streamWriter?.Flush();
-        }
-
         public void Dispose()
         {
             _streamWriter?.Dispose();
