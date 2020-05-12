@@ -22,6 +22,8 @@ namespace Reminder.Domain
         {
             _storage = storage;
             _receiver = receiver;
+
+            _receiver.MessageReceived += ReceiverOnMessageReceived;
         }
 
         public void Run()
@@ -37,6 +39,8 @@ namespace Reminder.Domain
                 null,
                 TimeSpan.Zero,
                 TimeSpan.FromSeconds(1));
+            
+            _receiver.Run(); //чтобы слушать новые сообщения (добавлять новые сообщения сторедж)
         }        
 
         private void CheckAwaitingReminders(object dummy) //то что не будет использоваться, отмечается "dummy"
@@ -88,6 +92,13 @@ namespace Reminder.Domain
                                 item,
                                 previousStatus)));
             }
+        }
+
+        private void ReceiverOnMessageReceived(object sender, MessageReceivedEventArgs e)
+        {
+            var reminderItem = new ReminderItem(Guid.NewGuid()
+                e.ContactId,
+                e.Message);
         }
     }
 }
