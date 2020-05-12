@@ -10,6 +10,7 @@ namespace Reminder.App
         static void Main(string[] args)
         {
             IReminderStorage storage = new InMemoryReminderStorage();
+
             ((InMemoryReminderStorage)storage).RunWhenAddingDone = (sender, e) =>
             {
                 Console.WriteLine("DELEGATE New item added!");

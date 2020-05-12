@@ -10,8 +10,8 @@ namespace Reminder.Storage.Core
         public string Message { get; set; }
         public ReminderItemStatus Status { get; set; }
 
-        public TimeSpan TimeToAlarm => Date - DateTimeOffset.Now;
-        public bool IsTimeToSend() => TimeToAlarm <= TimeSpan.Zero;
+        public TimeSpan TimeToAlarm => Date - DateTimeOffset.Now; //время ожидания
+        public bool IsTimeToSend() => TimeToAlarm <= TimeSpan.Zero; //свойство, которое проверяет готов к отправке или нет
         public ReminderItem(Guid id, string contactID, DateTimeOffset date, string message)
         {
             Id = id;

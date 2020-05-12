@@ -19,13 +19,13 @@ namespace Reminder.Domain
             _storage = storage;
         }
 
-        public void Run()
+        public void Run() //запускать таймер
         {
             _awaitingRemindersCheckTimer = new Timer(
                 CheckAwaitingReminders,
                 null,
-                TimeSpan.Zero,
-                TimeSpan.FromSeconds(2));
+                TimeSpan.Zero, //запускаем сразу
+                TimeSpan.FromSeconds(2)); //насколько часто проверять
         }
 
         private void CheckAwaitingReminders(object dummy) //то что не будет использоваться, отмечается "dummy"
@@ -45,6 +45,8 @@ namespace Reminder.Domain
                 _storage.Update(item);
                 //if (OnReminderItemReady != null)
                    // OnReminderItemReady(this, EventArgs.Empty);
+                
+                //cобытие
                 ReminderItemReady?.Invoke(
                     this,
                     new ReminderItemStatusChangedEventArgs(
