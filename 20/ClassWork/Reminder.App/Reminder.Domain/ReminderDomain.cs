@@ -6,6 +6,8 @@ using System.Threading;
 using Reminder.Domain.EventArgs;
 using Reminder.Domain.Model;
 using Reminder.Receiver.Core;
+using Reminder.Parsing;
+using Reminder.Sender.Core;
 
 namespace Reminder.Domain
 {
@@ -13,16 +15,18 @@ namespace Reminder.Domain
     {
         private IReminderStorage _storage;
         private IReminderReceiver _receiver;
+        private IReminderSender _sender;
 
         private Timer _awaitingRemindersCheckTimer; //Проверяет все awaiting не пора ли сделать их ready
         private Timer _readyReminderSetTimer;
 
         public event EventHandler<ReminderItemStatusChangedEventArgs> ReminderItemReady;
-        public ReminderDomain(IReminderStorage storage, IReminderReceiver receiver)
+        public event EventHandler<ReminderItemSendingFailedEventArgs> ReminderItemSendingFailed;
+        public ReminderDomain(IReminderStorage storage, IReminderReceiver receiver, IReminderSender sender)
         {
             _storage = storage;
             _receiver = receiver;
-
+            _sender = sender;
             _receiver.MessageReceived += ReceiverOnMessageReceived;
         }
 
@@ -77,28 +81,55 @@ namespace Reminder.Domain
             {
                 var previousStatus = item.Status;
                 try
-                {                    
+                {
+                    _sender.Send(item.ContactId, item.Message); //посылка сообщения
+
                     item.Status = ReminderItemStatus.SuccessfullySent;
                     _storage.Update(item);
+
+                    ReminderItemReady?.Invoke(
+                    this,
+                    new ReminderItemStatusChangedEventArgs(
+                    new ReminderItemStatusChangedModel(
+                    item,
+                    previousStatus)));
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     item.Status = ReminderItemStatus.Failed;
+                    ReminderItemSendingFailed?.Invoke(
+                   this,
+                   new ReminderItemSendingFailedEventArgs(
+                   new ReminderItemStatusChangedModel(
+                   item,
+                   previousStatus), e));
                 }
-                ReminderItemReady?.Invoke(
-                        this,
-                        new ReminderItemStatusChangedEventArgs(
-                            new ReminderItemStatusChangedModel(
-                                item,
-                                previousStatus)));
+
             }
         }
 
         private void ReceiverOnMessageReceived(object sender, MessageReceivedEventArgs e)
         {
-            var reminderItem = new ReminderItem(Guid.NewGuid()
+            //parsing of the e.Message to get alarm message and date
+            var parsedMessage = MessageParser.ParseMessage(e.Message);
+
+            if(parsedMessage == null)
+            {
+                // we can raise some MessageParsingFailed event
+                //сделать event
+                return;
+            }
+
+            var item = new ReminderItem(
+                Guid.NewGuid(),
                 e.ContactId,
-                e.Message);
+                parsedMessage.Date,
+                parsedMessage.Message);
+
+            //adding new reminder item to the storage
+            _storage.Add(item);
+
+            //send message that reminder item was added
         }
     }
 }

@@ -6,6 +6,11 @@ using Reminder.Domain;
 using Reminder.Domain.EventArgs;
 using Reminder.Domain.Model;
 using Reminder.Receiver.Core;
+using Reminder.Receiver.Telegram;
+using System.Net;
+using MihaZupan;
+using Reminder.Sender.Core;
+using Reminder.Sender.Telegram;
 
 namespace Reminder.App
 {
@@ -13,17 +18,23 @@ namespace Reminder.App
     {
         static void Main(string[] args)
         {
-            IReminderStorage storage = new InMemoryReminderStorage();
-            IReminderReceiver recevier = null; //TODO: do not forget create instance
+            const string token = "1230755607:AAG5-nrR-JUsUpr-5G2NEeoNfdjbEZPXqQM";
+            const string proxyHost = "proxy.litvinova.net"; //"proxy.golyakov.net";
+            const int proxyPort = 1080;
+            IWebProxy proxy = new HttpToSocks5Proxy(proxyHost, proxyPort);
 
-            ReminderDomain domain = new ReminderDomain(storage, recevier);
+            IReminderStorage storage = new InMemoryReminderStorage();
+            IReminderReceiver recevier = new TelegramReminderReceiver(token/*,proxy*/);
+            IReminderSender sender = new TelegramReminderSender(token);
+
+            ReminderDomain domain = new ReminderDomain(storage, recevier, sender);
             domain.ReminderItemReady += OnReminderItemReady;
 
-            storage.Add(new ReminderItem(
-                Guid.NewGuid(),
-                "TelegramContactID",
-                DateTimeOffset.Now,
-                "Hello World ><"));
+            //storage.Add(new ReminderItem(
+            //    Guid.NewGuid(),
+            //    "TelegramContactID",
+            //    DateTimeOffset.Now,
+            //    "Hello World ><"));
 
             domain.Run();
 

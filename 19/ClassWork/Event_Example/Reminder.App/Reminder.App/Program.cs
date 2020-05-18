@@ -11,10 +11,13 @@ namespace Reminder.App
         {
             IReminderStorage storage = new InMemoryReminderStorage();
 
-            ((InMemoryReminderStorage)storage).RunWhenAddingDone = (sender, e) =>
-            {
-                Console.WriteLine("DELEGATE New item added!");
-            };
+            //((InMemoryReminderStorage)storage).RunWhenAddingDone = (sender, e) =>
+            //{
+            //    Console.WriteLine("DELEGATE New item added!");
+            //};
+
+            ((InMemoryReminderStorage)storage).RunWhenAddingDone += OnRunWhenAddingDone;
+
             //Или
             ((InMemoryReminderStorage)storage).OnAddSuccess += (sender, e) =>
             {
@@ -40,6 +43,11 @@ namespace Reminder.App
             {
                 Console.WriteLine(item);
             }
+        }
+
+        private static void OnRunWhenAddingDone(object sender, EventArgs e)
+        {            
+            Console.WriteLine("DELEGATE New item added!");
         }
     }
 }
