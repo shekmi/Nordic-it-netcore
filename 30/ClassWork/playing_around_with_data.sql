@@ -25,6 +25,11 @@ EXECUTE dbo.CreateCategory 'Other', NULL
 SELECT * FROM dbo.Category
 SELECT * FROM dbo.Goods
 
+SELECT
+	*
+FROM dbo.Goods AS G
+INNER JOIN dbo.Category AS C
+	ON C.Id = G.CategoryId
 
 SELECT
 	G.Name,

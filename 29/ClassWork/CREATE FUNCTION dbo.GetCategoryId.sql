@@ -15,7 +15,7 @@ BEGIN
 	-- если не нашли, ищем по начальным символам
 	IF(@guid IS NULL)
 	BEGIN
-		SELECT TOP 1 @guid = Id -- TOP 1 ограничивает
+		SELECT TOP 1 @guid = Id -- TOP 1 ограничивает выборку guid из таблицы
 		FROM dbo.Category
 		WHERE [Name] LIKE @categoryName + '%'
 	END
